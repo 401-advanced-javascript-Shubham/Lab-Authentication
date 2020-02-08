@@ -5,8 +5,8 @@
 ### Author: Shubham Majumdar
 
 ### Links and Resources
-* [submission PR](https://github.com/401-advanced-javascript-Shubham/Lab09-APIServer/pull/1)
-* [Github Actions](https://github.com/401-advanced-javascript-Shubham/Lab09-APIServer/actions)
+* [submission PR](https://github.com/401-advanced-javascript-Shubham/Lab-Authentication/pull/1)
+* [Github Actions](https://github.com/401-advanced-javascript-Shubham/Lab-Authentication/actions)
 
 #### Documentation
 * [api docs](http://xyz.com/api-docs) (API servers)
