@@ -1,16 +1,32 @@
 'use strict';
 
 const express =  require('express');
-
-const auth = require('./basic-auth-middleware.js');
-const users = require('./users.js')
 const app = express();
+const mongoose = require('mongoose');
+const cors = require('cors');
+const morgan = require('morgan');
 
+const auth = require('./middleware/basic-auth-middleware.js');
+const Users = require('./users.js')
+
+const timestamp = require('./middleware/timestamp.js');
+const logger = require('./middleware/logger.js');
+const errorHandler = require('./middleware/500.js');
+const notFoundHandler = require('./middleware/404.js');
+
+//Third party global middleware
+app.use(cors());
+app.use(morgan('dev'));
+
+
+//Our middleware
 app.use(express.json());
+app.use(timestamp);
+app.use(logger);
 
 app.post('/signup',(req,res)=>{
 
-
+let user = new Users(req.body);
   users.save(req.body)
     .then (user => {
       //make a token
@@ -37,7 +53,15 @@ app.get('/secretStuff', auth,(req,res)
 //     res.send('you got mail');
 // })
 
+// because these are defined last, they end up as catch-alls.
+app.use('*', notFoundHandler);
+app.use(errorHandler);
+
+// Export an object with the whole server and a separate method that can start the server
 module.exports = {
-    start: (port) => app.listen(port, () =>
-    console.log(`Up on ${port}`))
-}
+  //exporting app for testing
+  apiServer: app,
+  start: (port) => {
+    app.listen(port, () => console.log(`Listening on ${port}`));
+  }
+};

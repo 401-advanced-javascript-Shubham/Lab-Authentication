@@ -2,7 +2,7 @@
 
 const base64 = require('base-64');
 
-const users = require('./users.js');
+const Users = require('./users.js');
 
 module.exports = (req, res, next) => {
 
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
 
   // decodes to user:pass and splits it to an array
   let [user, password] = base64.decode(basic).split(':');
-  users.authenticateBasic(user, password)
+  Users.authenticateBasic(user, password)
     .then( validUser => {
       req.token =  users.generateToken(validUser);
       next();
