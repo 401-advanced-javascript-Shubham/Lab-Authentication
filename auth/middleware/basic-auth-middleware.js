@@ -14,10 +14,11 @@ module.exports = (req, res, next) => {
   let basic = req.headers.authorization.split(' ').pop();
 
   // decodes to user:pass and splits it to an array
-  let [user, password] = base64.decode(basic).split(':');
-  Users.authenticateBasic(user, password)
-    .then( validUser => {
-      req.token =  users.generateToken(validUser);
+  let [username, password] = base64.decode(basic).split(':');
+
+  Users.authenticateBasic(username, password)
+    .then( user => {
+      req.token =  user.generateToken();
       next();
     })
     .catch(err =>{

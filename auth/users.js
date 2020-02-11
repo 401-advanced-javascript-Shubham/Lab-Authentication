@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 let SECRET = 'Ilovecoding';
 
-const Users = new mongoose.Schema({
+const Users = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true }
   });
@@ -20,7 +20,7 @@ const Users = new mongoose.Schema({
   });
   
 
-// instance method
+// Anything.methods.whatever === instance method
 Users.methods.generateToken = function(user) {
     let tokenObject = {
         username: this.username
@@ -28,7 +28,7 @@ Users.methods.generateToken = function(user) {
 
     return jwt.sign(tokenObject,SECRET);
 }
-
+//Anything.statics.whatever === static or classs method
 Users.statics.authenticateBasic = async function (username, password){
   let query = {username : username};
   let user = await this.findOne(query);
@@ -41,4 +41,8 @@ Users.statics.authenticateBasic = async function (username, password){
        throw "Invalid User";
      }
 };
+
+Users.statics.authenticateWithToken = async function(token){
+  
+}
 module.exports = mongoose.model('users',Users);
